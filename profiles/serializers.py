@@ -7,7 +7,7 @@ class ProfileSerializer(serializers.ModelSerializer):
     """Serializer"""
     owner = serializers.ReadOnlyField(source='owner.username')
     is_owner = serializers.SerializerMethodField()
-    
+
     def get_is_owner(self, obj):
         """Get the is_owner field"""
         request = self.context['request']  # from context in views.py functions
