@@ -1,5 +1,6 @@
 """Serializers for JSON/XML conversation and validation"""
 from rest_framework import serializers
+from like.models import Like
 from .models import Post
 
 
@@ -9,6 +10,7 @@ class PostSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     profile_id = serializers.ReadOnlyField(source='owner.profile.id')
     profile_image = serializers.ReadOnlyField(source='owner.profile.image.url')
+    like_id = serializers.SerializerMethodField()
 
     def validate_image(self, value):  # Validate_(fieldname)
         """Image Validation"""
@@ -31,10 +33,20 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context['request']  # from context in views.py functions
         return request.user == obj.owner
 
+    def get_like_id(self, obj):
+        """Get like id"""
+        user = self.context['request'].user
+        if user.is_authenticated:
+            like = Like.objects.filter(
+                owner=user, post=obj
+            ).first()
+            return like.id if like else None
+        return None
+
     class Meta:
         """Which model data is the serializer accessing?"""
         model = Post
         # fields = '__all__'
         fields = ['id', 'owner', 'is_owner', 'profile_id',
                   'title', 'content', 'created_at', 'updated_at',
-                  'profile_image', 'image', 'image_filter']
+                  'profile_image', 'image', 'image_filter', 'like_id']
