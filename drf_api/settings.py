@@ -61,7 +61,9 @@ REST_AUTH_SERIALIZERS = {
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = 'DEV' in os.environ
+
+# DEBUG = 'DEV' in os.environ
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', os.environ.get('ALLOWED_HOST')]
 
@@ -108,14 +110,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# if 'CLIENT_ORIGIN' in os.environ:
-#     CORS_ALLOWED_ORIGINS = [
-#         os.environ.get('CLIENT_ORIGIN')
-#     ]
-# else:
-#     CORS_ALLOWED_ORIGIN_REGEXES = [
-#         r"^https://.*\.gitpod\.io$",
-#     ]
+if 'CLIENT_ORIGIN' in os.environ:
+    CORS_ALLOWED_ORIGINS = [
+        os.environ.get('CLIENT_ORIGIN')
+    ]
+else:
+    CORS_ALLOWED_ORIGIN_REGEXES = [
+        r"^https://.*\.gitpod\.io$",
+    ]
 
 CORS_ALLOW_CREDENTIALS = True
 
