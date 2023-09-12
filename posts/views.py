@@ -6,6 +6,7 @@
 # from rest_framework.views import APIView
 from django.db.models import Count
 from rest_framework import generics, permissions, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from drf_api.permissions import IsOwnerOrReadOnly
 from .models import Post
 from .serializers import PostSerializer
@@ -25,12 +26,26 @@ class PostList(generics.ListCreateAPIView):
 
     filter_backends = [
         filters.OrderingFilter,  # Filter by Order
-        filters.SearchFilter  # Text Search Posts
+        filters.SearchFilter,  # Text Search Posts
+        DjangoFilterBackend
     ]
 
     search_fields = [
         'owner__username',
         'title'
+    ]
+
+    """
+    All filters are filtered by id by default
+    # 1 Shows posts from the profile that are followed by the owner
+    # 2 Shows posts liked by the owner. Doesn't need owner__ at beginning
+    # 2 cont. due to direct link between likes and post models)
+    # 3 Shows posts created by owner
+    """
+    filterset_fields = [
+        'owner__followed__owner__profile',  # 1 User Feed
+        'likes__owner__profile',  # 2 User liked posts
+        'owner__profile',  # 3 User posts
     ]
 
     ordering_fields = [
