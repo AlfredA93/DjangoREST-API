@@ -36,6 +36,7 @@ class PostList(generics.ListCreateAPIView):
     ]
 
     """
+    For filterset_fields - 
     All filters are filtered by id by default
     # 1 Shows posts from the profile that are followed by the owner
     # 2 Shows posts liked by the owner. Doesn't need owner__ at beginning
