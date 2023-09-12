@@ -65,7 +65,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # DEBUG = 'DEV' in os.environ
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', os.environ.get('ALLOWED_HOST')]
+ALLOWED_HOSTS = ['127.0.0.1', os.environ.get('ALLOWED_HOSTS')]
 
 
 # Application definition
